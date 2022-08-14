@@ -1,0 +1,24 @@
+service: serverless-websocket
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  logRetentionInDays: 3
+  # logs:
+  #   websocket: true # this must be enabled only after initial stack deployment. bug?
+
+functions:
+  replies:
+    handler: dist/handler.replies
+    events:
+      - websocket:
+          route: replies
+  defaultHandler:
+    handler: dist/handler.hello
+    events:
+      - websocket:
+          route: $default
+          routeResponseSelectionExpression: $default
